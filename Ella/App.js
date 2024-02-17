@@ -1,4 +1,7 @@
-import BotDP from './assets/NightDev4l-logos.jpeg';
+//App.js
+
+import { Image } from 'react-native';
+import BotDP from './assets/NightDev4l-logos.jpeg'
 import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View, FlatList } from 'react-native';
 import { generateResponse, happyWords, sadWords } from './Dialog';
@@ -36,15 +39,18 @@ export default function App() {
   return (
     <View style={styles.container}>
       {/* Header Bar */}
+      <View style={styles.dp}>
+        <Image source={BotDP} style={styles.dp} />
+      </View>
+
       <View style={styles.header}>
-        <img source={'./assets/NightDev4l-logos.jpeg'} style={styles.dp} />
         <Text style={styles.headerText}> {BotName} </Text>
         {/* You can add more components/buttons here for call and video options */}
       </View>
       
       {/* Chat Content */}
       <View style={styles.chatContent}>
-        <FlatList
+        <FlatList 
           data={chatHistory}
           renderItem={({ item }) => (
             <View style={item.sender === 'user' ? styles.userMessage : styles.botMessage}> 
@@ -81,12 +87,11 @@ const styles = StyleSheet.create({
   dp: {
     width: 36,
     height: 36,
-    color: '#f0f0f0',
     padding: 2,
-    backgroundcolor: '#4B0082',
-    borderradius: 50,
-    border: 2, 
-    boxsizing: 'contentbox', 
+    backgroundimage: 'url(./assets/NightDev4l-logos.jpeg)',
+    borderRadius: 50,
+    borderWidth: 2, 
+    boxSizing: 'content-box',  
   },
   header: {
     height: 60, // Adjust height as needed
