@@ -10,6 +10,11 @@ export default function App() {
     const userMessage = { sender: 'user', message: inputText }; // Creating user message object
     let updatedChatHistory = [...chatHistory, userMessage]; // Updating chat history with user message 
 
+    // for devlopment clear chat log
+    if (inputText.toLowerCase() === 'clear') {
+      const botResponse = { sender: 'bot', message: 'chat log cleard sucssesfuly!' }; // Generating response for happy mood
+      updatedChatHistory=[botResponse]; // Adding bot response to chat history
+    }
     // Checking for happy words in the input text
     if (happyWords.some(word => inputText.toLowerCase().includes(word))) {
       const botResponse = { sender: 'bot', message: generateResponse('happy') }; // Generating response for happy mood
@@ -30,20 +35,21 @@ export default function App() {
       <FlatList
         data={chatHistory}
         renderItem={({ item }) => (
-          <View style={item.sender === 'user' ? styles.userMessage : styles.botMessage}>
+          //this is like an dict that comper the what to say when a speacific word is used 
+          <View style={item.sender === 'user' ? styles.userMessage : styles.botMessage}> 
             <Text>{item.message}</Text>
           </View>
         )}
         keyExtractor={(item, index) => index.toString()}
       />
       <View style={styles.inputContainer}>
-        <TextInput
+        <TextInput // this is the input field for the user to type in and what to do after clear input 
           style={styles.input}
           value={inputText}
           onChangeText={setInputText}
           placeholder="Type your message..."
         />
-        <TouchableOpacity style={styles.sendButton} onPress={handleSendMessage}>
+       <TouchableOpacity style={styles.sendButton} onPress={handleSendMessage}>
           <Text style={styles.sendButtonText}>Send</Text>
         </TouchableOpacity>
       </View>
