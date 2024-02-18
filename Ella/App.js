@@ -1,29 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View, FlatList, Image } from 'react-native';
-import { generateResponse, happyWords, sadWords } from './Dialog';
+import { generateResponse, happyWords, sadWords, systemFunctionWords, mood } from './Dialog';
 
 export default function App() {
-  const [inputText, setInputText] = useState(''); // State to store user input
-  const [chatHistory, setChatHistory] = useState([]); // State to store chat history
-  let BotName = "Ella"; // Bot's name
+  const [inputText, setInputText] = useState('');
+  const [chatHistory, setChatHistory] = useState([]);
+  const flatListRef = useRef(null); // Ref for FlatList
+
+  let BotName = "Ella";
 
   const handleSendMessage = () => {
     const userMessage = { sender: 'user', message: inputText }; // Creating user message object
     let updatedChatHistory = [...chatHistory, userMessage]; // Updating chat history with user message 
 
     // for development clear chat log
-    if (inputText.toLowerCase() === 'clear') {
-      const botResponse = { sender: BotName, message: 'chat log cleared successfully!' }; // Generating response for happy mood
+    if (systemFunctionWords.some(word => inputText.toLowerCase().includes(word))) {
+      const botResponse = { sender: BotName, message: generateResponse('systemFunction')}; // Generating response for happy mood
       updatedChatHistory = [botResponse]; // Adding bot response to chat history
     }
     // Checking for happy words in the input text
-    if (happyWords.some(word => inputText.toLowerCase().includes(word))) {
+    else if (happyWords.some(word => inputText.toLowerCase().includes(word))) {
       const botResponse = { sender: BotName, message: generateResponse('happy') }; // Generating response for happy mood
       updatedChatHistory = [...updatedChatHistory, botResponse]; // Adding bot response to chat history
     }
     // Checking for sad words in the input text
     else if (sadWords.some(word => inputText.toLowerCase().includes(word))) {
       const botResponse = { sender: BotName, message: generateResponse('sad') }; // Generating response for sad mood
+      updatedChatHistory = [...updatedChatHistory, botResponse]; // Adding bot response to chat history
+    }
+    else if (mood !== 'happy' && mood !== 'sad') {
+      const botResponse = { sender: BotName, message: generateResponse('neutral') }; // Generating response for neutral mood
       updatedChatHistory = [...updatedChatHistory, botResponse]; // Adding bot response to chat history
     }
     
@@ -35,24 +41,26 @@ export default function App() {
     <View style={styles.container}>
       {/* Header Bar */}
       <View style={styles.header}>
-        <Image source={require('./assets/NightDev4l-logos.jpeg')} style={styles.dp} />
+        <Image source={require('./assets/Ella.png')} style={styles.dp} />
         <Text style={styles.headerText}> {BotName} </Text>
-        {/* You can add more components/buttons here for call and video options */}
       </View>
-      
+
       {/* Chat Content */}
       <View style={styles.chatContent}>
-        <FlatList 
+        <FlatList
+          ref={flatListRef} // Set the ref to the FlatList
           data={chatHistory}
           renderItem={({ item }) => (
-            <View style={item.sender === 'user' ? styles.userMessage : styles.botMessage}> 
+            <View style={item.sender === 'user' ? styles.userMessage : styles.botMessage}>
               <Text>{item.message}</Text>
             </View>
           )}
           keyExtractor={(item, index) => index.toString()}
+          // Auto-scroll on content size change
+          onContentSizeChange={() => flatListRef.current.scrollToEnd({ animated: true })}
         />
       </View>
-      
+
       {/* Input Container */}
       <View style={styles.inputContainer}>
         <TextInput
@@ -77,14 +85,14 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   dp: {
-    width: 36,
-    height: 36,
+    width: 40,
+    height: 40,
     borderRadius: 50,
     borderWidth: 2, 
     borderColor: '#4B0082',
   },
   header: {
-    height: 60, 
+    height: 70, 
     backgroundColor: '#f0f0f0',
     justifyContent: 'center',
     alignItems: 'center',
