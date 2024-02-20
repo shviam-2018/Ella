@@ -1,3 +1,5 @@
+// App.js
+
 import React, { useState, useRef } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View, FlatList, Image } from 'react-native';
 import { generateResponse, happyWords, sadWords, systemFunctionWords, mood } from './Dialog';
@@ -15,7 +17,7 @@ export default function App() {
 
     // for development clear chat log
     if (systemFunctionWords.some(word => inputText.toLowerCase().includes(word))) {
-      const botResponse = { sender: BotName, message: generateResponse('systemFunction')}; // Generating response for happy mood
+      const botResponse = { sender: BotName, message: generateResponse(inputText.toLowerCase())}; // Generating response for system function
       updatedChatHistory = [botResponse]; // Adding bot response to chat history
     }
     // Checking for happy words in the input text
@@ -28,7 +30,7 @@ export default function App() {
       const botResponse = { sender: BotName, message: generateResponse('sad') }; // Generating response for sad mood
       updatedChatHistory = [...updatedChatHistory, botResponse]; // Adding bot response to chat history
     }
-    else if (mood !== 'happy' && mood !== 'sad') {
+    else if (mood !== 'happy' && mood !== 'sad' && mood !== 'systemFunction') {
       const botResponse = { sender: BotName, message: generateResponse('neutral') }; // Generating response for neutral mood
       updatedChatHistory = [...updatedChatHistory, botResponse]; // Adding bot response to chat history
     }

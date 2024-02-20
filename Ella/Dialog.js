@@ -23,9 +23,9 @@ let mood = ""; // Variable to store the detected mood
 // Check if the message is a system function
 if (systemFunctionWords.some(word => message.includes(word))) {
   mood = 'systemFunction';
-}
+  }
   // Check if any happy words are present in the message
-  if (happyWords.some(word => message.includes(word))) {
+  else if (happyWords.some(word => message.includes(word))) {
     mood = "happy";
   }
   // Check if any sad words are present in the message
