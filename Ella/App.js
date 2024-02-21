@@ -2,7 +2,7 @@
 
 import React, { useState, useRef } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View, FlatList, Image } from 'react-native';
-import { generateResponse, happyWords, sadWords, systemFunctionWords, mood } from './Dialog';
+import { generateResponse, happyWords, sadWords, angryWords, depressedWords , systemFunctionWords, mood } from './Dialog';
 
 export default function App() {
   const [inputText, setInputText] = useState('');
@@ -30,7 +30,17 @@ export default function App() {
       const botResponse = { sender: BotName, message: generateResponse('sad') }; // Generating response for sad mood
       updatedChatHistory = [...updatedChatHistory, botResponse]; // Adding bot response to chat history
     }
-    else if (mood !== 'happy' && mood !== 'sad' && mood !== 'systemFunction') {
+    // Checking for angry words in the input text
+    else if (angryWords.some(word => inputText.toLowerCase().includes(word))) {
+      const botResponse = { sender: BotName, message: generateResponse('angry') }; // Generating response for angry mood
+      updatedChatHistory = [...updatedChatHistory, botResponse]; // Adding bot response to chat history
+    }
+    // Checking for depressed words in the input text
+    else if (depressedWords.some(word => inputText.toLowerCase().includes(word))) {
+      const botResponse = { sender: BotName, message: generateResponse('depressed')} ; // Generating response for depressed mood
+      updatedChatHistory = [...updatedChatHistory, botResponse]; // Adding bot response to chat history
+    }
+    else if (mood !== 'happy' && mood !== 'sad' && mood !== 'systemFunction' && mood !== 'angry' && mood !== 'depressed') {
       const botResponse = { sender: BotName, message: generateResponse('neutral') }; // Generating response for neutral mood
       updatedChatHistory = [...updatedChatHistory, botResponse]; // Adding bot response to chat history
     }
