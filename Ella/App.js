@@ -1,6 +1,6 @@
 // App.js
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View, FlatList, Image } from 'react-native';
 import { generateResponse, happyWords, sadWords, angryWords, depressedWords , systemFunctionWords, mood } from './Dialog';
 import { styles } from './style';
@@ -42,7 +42,7 @@ export default function App() {
       updatedChatHistory = [...updatedChatHistory, botResponse]; // Adding bot response to chat history
     }
     else if (mood !== 'happy' && mood !== 'sad' && mood !== 'systemFunction' && mood !== 'angry' && mood !== 'depressed') {
-      const botResponse = { sender: BotName, message: generateResponse('neutral') }; // Generating response for neutral mood
+      const botResponse = { sender: BotName, message: generateResponse('neutral')};
       updatedChatHistory = [...updatedChatHistory, botResponse]; // Adding bot response to chat history
     }
     
