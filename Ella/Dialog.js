@@ -36,7 +36,7 @@ export const infoFunctionResponses =
 "Version: 1.0.1\n" +
 "Author: NightDev4l\n" +
 "Description: Ella is a chatbot designed to provide emotional support and engage in meaningful conversations. She can detect your mood and respond accordingly. Ella is here to listen, offer comfort, and provide a safe space for you to express yourself. Feel free to share your thoughts, feelings, or anything you'd like to talk about. Remember, you're not alone. I'm here for you.\n" +
-"Website:" + "https://nightdev4l.github.io/Ella-Chatbot/";
+"Website: https://nightdev4l.web.app/";
 
 // Function to shuffle an array
 function shuffleArray(array) {
