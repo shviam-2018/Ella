@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View, FlatList, Image } from 'react-native';
-import { generateResponse, happyWords, sadWords, angryWords, depressedWords , systemFunctionWords, mood } from './Dialog';
+import { generateResponse, happyWords, sadWords, angryWords, depressedWords , infoFunction, mood, clearFunction,} from './Dialog';
 import { styles } from './style';
 
 export default function App() {
@@ -16,10 +16,13 @@ export default function App() {
     const userMessage = { sender: 'user', message: inputText }; // Creating user message object
     let updatedChatHistory = [...chatHistory, userMessage]; // Updating chat history with user message 
 
-    // for development clear chat log
-    if (systemFunctionWords.some(word => inputText.toLowerCase().includes(word))) {
+    // cheacking for system function in the input text
+    if (inputText.toLowerCase().includes(clearFunction)) {
       const botResponse = { sender: BotName, message: generateResponse(inputText.toLowerCase())}; // Generating response for system function
       updatedChatHistory = [botResponse]; // Adding bot response to chat history
+    } else if (inputText.toLowerCase().includes(infoFunction)) {
+      const botResponse = { sender: BotName, message: generateResponse(inputText.toLowerCase())}; // Generating response for system function
+      updatedChatHistory = [...updatedChatHistory, botResponse]; // Adding bot response to chat history
     }
     // Checking for happy words in the input text
     else if (happyWords.some(word => inputText.toLowerCase().includes(word))) {
@@ -65,7 +68,7 @@ export default function App() {
           data={chatHistory}
           renderItem={({ item }) => (
             <View style={item.sender === 'user' ? styles.userMessage : styles.botMessage}>
-              <Text>{item.message}</Text>
+              <Text onPress={() => handlePress(item)} style={{ color: item.isClickable ? 'blue' : 'black' }}>{item.message}</Text>
             </View>
           )}
           keyExtractor={(item, index) => index.toString()}
