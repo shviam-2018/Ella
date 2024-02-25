@@ -1,7 +1,12 @@
 // Dialog.js
 
-// List of system function words
-export const systemFunctionWords = ["clear"]; 
+// List of system functions
+
+// Function to clear chat log
+export const clearFunction = "clear";
+
+// Function to see info about Ella
+export const infoFunction = "whoami";
 
 // List of happy words
 export const happyWords = ["happy", "joyful", "excited", "fun", "awesome", "fantastic", "amazing", "ecstatic", "delighted", "thrilled", "overjoyed", "blissful"];
@@ -24,7 +29,14 @@ export let sadResponses = ["I'm sorry to hear that.", "Cheer up!", "Things will 
 export let angryResponses = ["Take a deep breath.", "Let's try to find a solution.", "Vent it out, I'm here to listen.", "Things will get better, stay strong.", "Count to ten before reacting.", "Try to find some calm amidst the storm.", "This too shall pass.", "You're justified in feeling this way.", "Let's work through this together.", "I'm here to support you."];
 export let depressedResponses = ["I'm here for you.", "You're not alone.", "It's okay to feel this way, but remember, things can improve.", "Would you like to talk about what's bothering you?", "Take your time, I'm here to listen.", "You're stronger than you realize.", "You're not defined by your feelings.", "I believe in you, even when you don't.", "Let's focus on small victories.", "Sending you strength and warmth."];
 
-export const systemFunctionResponses = "Chat log cleared successfully!";
+// Response for system functions
+export const clearFunctionResponses = "Chat log cleared successfully!";
+
+export const infoFunctionResponses = 
+"Version: 1.0.1\n" +
+"Author: NightDev4l\n" +
+"Description: Ella is a chatbot designed to provide emotional support and engage in meaningful conversations. She can detect your mood and respond accordingly. Ella is here to listen, offer comfort, and provide a safe space for you to express yourself. Feel free to share your thoughts, feelings, or anything you'd like to talk about. Remember, you're not alone. I'm here for you.\n" +
+"Website: https://nightdev4l.web.app/";
 
 // Function to shuffle an array
 function shuffleArray(array) {
@@ -51,8 +63,11 @@ export function generateResponse(message) {
   let mood = ""; // Variable to store the detected mood
 
   // Check if the message is a system function
-  if (systemFunctionWords.some(word => message.includes(word))) {
-    mood = 'systemFunction';
+  if (message.includes(clearFunction)) {
+    mood = 'clearFunction';
+  } 
+  else if (message.includes(infoFunction)) {
+    mood = 'infoFunction';
   }
   // Check if any happy words are present in the message
   else if (happyWords.some(word => message.includes(word))) {
@@ -112,9 +127,12 @@ export function generateResponse(message) {
     const response = depressedResponses[responseIndex];
     usedDepressedResponses.push(response);
     return response;
-  } else if (mood === 'systemFunction') {
-    return systemFunctionResponses;
-  } else if (mood === "neutral"){
+  } else if (mood === 'clearFunction') {
+    return clearFunctionResponses;
+  } else if (mood === 'infoFunction'){
+    return infoFunctionResponses;
+  
+  }else if (mood === "neutral"){
     return neutralPrompts[Math.floor(Math.random() * neutralPrompts.length)];
   }
 }
